@@ -1,16 +1,18 @@
 -------------------------------------------------------------------------------
 Test set: com.parkit.parkingsystem.FareCalculatorServiceTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.097 s <<< FAILURE! - in com.parkit.parkingsystem.FareCalculatorServiceTest
-calculateFareCarWithLessThanOneHourParkingTime  Time elapsed: 0.055 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <1.125> but was: <1.5>
-	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareCarWithLessThanOneHourParkingTime(FareCalculatorServiceTest.java:110)
+Tests run: 11, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.127 s <<< FAILURE! - in com.parkit.parkingsystem.FareCalculatorServiceTest
+calculateFareUnkownType  Time elapsed: 0.024 s  <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problem: 
+	Lambda expressions are allowed only at source level 1.8 or above
 
-calculateFareCarWithMoreThanADayParkingTime  Time elapsed: 0 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <36.0> but was: <0.0>
-	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareCarWithMoreThanADayParkingTime(FareCalculatorServiceTest.java:124)
+	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareUnkownType(FareCalculatorServiceTest.java:69)
 
-calculateFareBikeWithLessThanOneHourParkingTime  Time elapsed: 0.001 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <0.75> but was: <1.0>
-	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareBikeWithLessThanOneHourParkingTime(FareCalculatorServiceTest.java:96)
+calculateFareBikeWithFutureInTime  Time elapsed: 0.016 s  <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problem: 
+	Lambda expressions are allowed only at source level 1.8 or above
+
+	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareBikeWithFutureInTime(FareCalculatorServiceTest.java:82)
 
