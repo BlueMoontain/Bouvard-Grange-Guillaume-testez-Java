@@ -14,7 +14,6 @@ public class FareCalculatorService {
         long outHour = ticket.getOutTime().getTime();
         long duration = outHour - inHour;
       
-      
         if (duration < (30 * 60 * 1000)) { // <30min = free parking
             ticket.setPrice(0); 
         } 
@@ -41,7 +40,16 @@ public class FareCalculatorService {
     }
 
     ticket.setPrice(ratePerHour);
-}  
+    }  
+} 
+        public void calculateFare(Ticket ticket) {
+        calculateFare(ticket, false); // no discount
+    }
+}
+
+
+
+//previous : 
         // if (duration < (30*60*1000)) { //less than 30 minutes (in milliseconds) = free parking
         //     ticket.setPrice(0); 
         // }
@@ -68,9 +76,3 @@ public class FareCalculatorService {
         // }
         // // revoir discount pour opti méthode (lignes qui se repetent, peut etre que nom n'est pas le plus clair mais attention a tous les changer si modif)
         // }
-    }
-    
-        public void calculateFare(Ticket ticket) {
-        calculateFare(ticket, false); // no discount
-    }
-}

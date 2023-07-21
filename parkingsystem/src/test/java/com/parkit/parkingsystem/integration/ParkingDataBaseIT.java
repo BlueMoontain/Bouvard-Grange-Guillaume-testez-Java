@@ -1,4 +1,4 @@
- package com.parkit.parkingsystem.integration;
+package com.parkit.parkingsystem.integration;
 
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -60,8 +60,7 @@ public class ParkingDataBaseIT {
     public void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
-
+        
         // check that a ticket is actualy saved in DB
         String vehicleRegNumber = "ABCDEF"; 
         Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
@@ -85,8 +84,7 @@ public class ParkingDataBaseIT {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
 
-// check that the fare generated and out time are populated correctly in the database
-       
+        // check that the fare generated and out time are populated correctly in the database
         String vehicleRegNumber = "ABCDEF"; 
         Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
         assertNotNull(ticket);
@@ -102,6 +100,7 @@ public class ParkingDataBaseIT {
 public void testParkingLotExitRecurringUser() {
 
     ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    FareCalculatorService fareCalculatorService = new FareCalculatorService();
     parkingService.processIncomingVehicle();
     parkingService.processExitingVehicle();
     parkingService.processIncomingVehicle();
@@ -111,6 +110,7 @@ public void testParkingLotExitRecurringUser() {
     String vehicleRegNumber = "ABCDEF";
     Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
     assertNotNull(ticket);
+
     assertEquals(0.95 * fareCalculatorService.calculateFare(ticket, true), ticket.getPrice());
 }
 

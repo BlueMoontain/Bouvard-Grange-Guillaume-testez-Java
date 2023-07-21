@@ -70,16 +70,7 @@ public class ParkingServiceTest {
         verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
     }
 
-//  EXEMPLE :
-//    mock utilisateur qui saisit 1 pour une voiture
-//    mock la sauvegarde du ticket (méthode saveTicket, alors return true)
-//    mock renvoyer 1 pour la place de parking
-//    mock nbTicket pour qu'il renvoie 0 (jamais venu) 
-//    packingService.processIncomingVehicle();
-//    vérifie que le parking a été updaté 1 fois (classe ParkingSpotDAO)
-//    vérifie que le ticket a été enregistré 1 fois (classe TicketDAO)
-//    vérifie que nbTicket a été utilisée 1 fois
-    
+
     @Test
     public void testProcessIncomingVehicle() {
 
@@ -116,27 +107,6 @@ public void processExitingVehicleTestUnableUpdate() {
         verify(parkingSpotDAO, Mockito.times(0)).updateParking(any(ParkingSpot.class));
         verify(ticketDAO, times(1)).getNbTicket(anyString());
         verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
-
-    // Ticket ticket = new Ticket(); // pourtant éditer un nouveau ticket est déja réalisé en @beforeEach mais si je l'enleve la variable ticket n'est pas définie
-    
-//     //Mock méthode getTicket() est appelée (any string) et renvoie l'objet ticket
-//     when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-
-//     //Mock méthode updateTicket() est appelée avec l'objet ticket en argument et renvoie false
-
-
-//     //Appel de la méthode à tester
-//     parkingService.processExitingVehicle();
-
-//     //Vérification getTicket() a été appelée une fois avec n'importe quelle chaîne de caractères
-//     verify(ticketDAO, times(1)).getTicket(anyString());
-
-//     //Vérification updateTicket() a été appelée une fois
-//     verify(ticketDAO, times(1)).updateTicket(ticket);
-
-//     //Vérifie que la méthode println() de System.out a été appelée une fois avec la chaîne de caractères spécifiée en argument ("Unable to update ticket information. Error occurred")
-//     verify(System.out, times(1)).println("Unable to update ticket information. Error occurred");
-// 
 }
 
 
@@ -159,12 +129,9 @@ public void testGetNextParkingNumberIfAvailable() {
 
     // Vérifie que le résultat est parkingSpot avec ID=1 et disponibilité=true
     assertNotNull(result);
-
     assertEquals(1, result.getId());
-
     assertTrue(result.isAvailable());
 }
-
 
 @Test
 public void testGetNextParkingNumberIfAvailableParkingNumberNotFound() {
@@ -180,6 +147,7 @@ public void testGetNextParkingNumberIfAvailableParkingNumberNotFound() {
     // Vérifie que getNextAvailableSlot() est appelée avec le bon type de véhicule
     verify(parkingSpotDAO, times(1)).getNextAvailableSlot(ParkingType.CAR);
 
+    // vérifie que parkingSpot renvoie "null" lorsque aucun emplacement de parking disponible n'est trouvé
     assertNull(parkingSpot);
 }
 
@@ -197,9 +165,8 @@ public void testGetNextParkingNumberIfAvailableParkingNumberWrongArgument() {
     // Vérifiez que getNextAvailableSlot() n'est pas appelée
     verify(parkingSpotDAO, never()).getNextAvailableSlot(any(ParkingType.class));
 
-    // Vérifiez que le résultat est "null" 
+    // Vérifiez que le résultat renvoie "null"
     assertNull(result);
-//  verify(result==null);
-
 }
+
 }

@@ -1,18 +1,11 @@
 -------------------------------------------------------------------------------
 Test set: com.parkit.parkingsystem.FareCalculatorServiceTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.127 s <<< FAILURE! - in com.parkit.parkingsystem.FareCalculatorServiceTest
-calculateFareUnkownType  Time elapsed: 0.024 s  <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.046 s <<< FAILURE! - in com.parkit.parkingsystem.FareCalculatorServiceTest
+com.parkit.parkingsystem.FareCalculatorServiceTest  Time elapsed: 0.045 s  <<< ERROR!
 java.lang.Error: 
 Unresolved compilation problem: 
-	Lambda expressions are allowed only at source level 1.8 or above
+	Syntax error on token "}", delete this token
 
-	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareUnkownType(FareCalculatorServiceTest.java:69)
-
-calculateFareBikeWithFutureInTime  Time elapsed: 0.016 s  <<< ERROR!
-java.lang.Error: 
-Unresolved compilation problem: 
-	Lambda expressions are allowed only at source level 1.8 or above
-
-	at com.parkit.parkingsystem.FareCalculatorServiceTest.calculateFareBikeWithFutureInTime(FareCalculatorServiceTest.java:82)
+	at com.parkit.parkingsystem.FareCalculatorServiceTest.setUp(FareCalculatorServiceTest.java:23)
 
