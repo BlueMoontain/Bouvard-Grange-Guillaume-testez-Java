@@ -1,11 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.parkit.parkingsystem.FareCalculatorServiceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.046 s <<< FAILURE! - in com.parkit.parkingsystem.FareCalculatorServiceTest
-com.parkit.parkingsystem.FareCalculatorServiceTest  Time elapsed: 0.045 s  <<< ERROR!
-java.lang.Error: 
-Unresolved compilation problem: 
-	Syntax error on token "}", delete this token
-
-	at com.parkit.parkingsystem.FareCalculatorServiceTest.setUp(FareCalculatorServiceTest.java:23)
-
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in com.parkit.parkingsystem.FareCalculatorServiceTest

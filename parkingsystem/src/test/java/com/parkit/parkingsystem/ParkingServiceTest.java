@@ -1,4 +1,3 @@
-
 package com.parkit.parkingsystem;
 
 import com.parkit.parkingsystem.constants.ParkingType;
@@ -20,7 +19,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-
 
 import java.util.Date;
 
@@ -65,108 +63,70 @@ public class ParkingServiceTest {
     @Test
     public void processExitingVehicleTest(){
         parkingService.processExitingVehicle();
+
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
         verify(ticketDAO, times(1)).getNbTicket(anyString());
         verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
     }
 
-
     @Test
     public void testProcessIncomingVehicle() {
+        when(inputReaderUtil.readSelection()).thenReturn(1);
+        when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
+        when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(1);
+        when(ticketDAO.getNbTicket(anyString())).thenReturn(0);
 
-   //Mock utilisateur pour sélectionner une voiture (1)
-   when(inputReaderUtil.readSelection()).thenReturn(1);
+        parkingService.processIncomingVehicle();
 
-   //Mock de la sauvegarde du ticket
-   when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
+        verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
+        verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
+        verify(ticketDAO, times(1)).getNbTicket(anyString());
+    }
 
-   //Mock renvoyant 1 pour la place de parking
-   when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(1);
-
-   //Mock renvoyant 0 pour nbTicket (jamais venu)
-    when(ticketDAO.getNbTicket(anyString())).thenReturn(0);
-
-   //Appel de la méthode à tester
-   parkingService.processIncomingVehicle();
-
-   // Vérification que le parking a été mis à jour 1 fois 
-   verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
-
-   // Vérification que le ticket a été enregistré 1 fois 
-   verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
-
-   // Vérification que nbTicket a été utilisé 1 fois
-   verify(ticketDAO, times(1)).getNbTicket(anyString());
-}
-
-
-@Test
-public void processExitingVehicleTestUnableUpdate() {
+    @Test
+    public void processExitingVehicleTestUnableUpdate() {
         when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(false);
+
         parkingService.processExitingVehicle();
+
         verify(parkingSpotDAO, Mockito.times(0)).updateParking(any(ParkingSpot.class));
         verify(ticketDAO, times(1)).getNbTicket(anyString());
         verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
-}
+    }
 
+    @Test
+    public void testGetNextParkingNumberIfAvailable() {
+        when(inputReaderUtil.readSelection()).thenReturn(1);
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
+        when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(parkingSpot.getId());
 
-@Test
-public void testGetNextParkingNumberIfAvailable() {
+        ParkingSpot result = parkingService.getNextParkingNumberIfAvailable();
 
-    when(inputReaderUtil.readSelection()).thenReturn(1);
+        verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any(ParkingType.class));
+        assertNotNull(result);
+        assertEquals(1, result.getId());
+        assertTrue(result.isAvailable());
+    }
 
-    // Crée un objet ParkingSpot avec ID=1 et disponibilité=true
-    ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
+    @Test
+    public void testGetNextParkingNumberIfAvailableParkingNumberNotFound() {
+        when(inputReaderUtil.readSelection()).thenReturn(1);
+        when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(0);
 
-    // Mock méthode getNextAvailableSlot() pour renvoyer le parkingSpot créé
-    when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(parkingSpot.getId());
+        ParkingSpot parkingSpot = parkingService.getNextParkingNumberIfAvailable();
 
-    // Appel de la méthode à tester
-    ParkingSpot result = parkingService.getNextParkingNumberIfAvailable();
+        verify(parkingSpotDAO, times(1)).getNextAvailableSlot(ParkingType.CAR);
+        assertNull(parkingSpot);
+    }
 
-    // Vérifie que la méthode getNextAvailableSlot() est appelée avec le bon type de véhicule
-    verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any(ParkingType.class));
+    @Test
+    public void testGetNextParkingNumberIfAvailableParkingNumberWrongArgument() {
+        when(inputReaderUtil.readSelection()).thenReturn(3);
 
-    // Vérifie que le résultat est parkingSpot avec ID=1 et disponibilité=true
-    assertNotNull(result);
-    assertEquals(1, result.getId());
-    assertTrue(result.isAvailable());
-}
+        ParkingSpot result = parkingService.getNextParkingNumberIfAvailable();
 
-@Test
-public void testGetNextParkingNumberIfAvailableParkingNumberNotFound() {
-
-    when(inputReaderUtil.readSelection()).thenReturn(1);
-
-    // Mock la méthode getNextAvailableSlot() pour renvoyer null
-    when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(0);
-
-    // Appel de la méthode à tester
-    ParkingSpot parkingSpot = parkingService.getNextParkingNumberIfAvailable();
-
-    // Vérifie que getNextAvailableSlot() est appelée avec le bon type de véhicule
-    verify(parkingSpotDAO, times(1)).getNextAvailableSlot(ParkingType.CAR);
-
-    // vérifie que parkingSpot renvoie "null" lorsque aucun emplacement de parking disponible n'est trouvé
-    assertNull(parkingSpot);
-}
-
-@Test
-public void testGetNextParkingNumberIfAvailableParkingNumberWrongArgument() {
-    // Mock méthode readSelection() pour renvoyer 3
-    when(inputReaderUtil.readSelection()).thenReturn(3);
-
-    // Appel de la méthode à tester
-    ParkingSpot result = parkingService.getNextParkingNumberIfAvailable();
-
-    // Vérifie que readSelection() est appelée
-    verify(inputReaderUtil, times(1)).readSelection();
-
-    // Vérifiez que getNextAvailableSlot() n'est pas appelée
-    verify(parkingSpotDAO, never()).getNextAvailableSlot(any(ParkingType.class));
-
-    // Vérifiez que le résultat renvoie "null"
-    assertNull(result);
-}
-
+        verify(inputReaderUtil, times(1)).readSelection();
+        verify(parkingSpotDAO, never()).getNextAvailableSlot(any(ParkingType.class));
+        assertNull(result);
+    }
 }

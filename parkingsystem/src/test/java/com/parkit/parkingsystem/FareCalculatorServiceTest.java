@@ -8,7 +8,6 @@ import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
@@ -127,7 +126,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareCarWithLessThan30minutesParkingTime(){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  29 * 60 * 1000) ); // less than 30 minutes parking time should give CAR free parking fare
+        inTime.setTime( System.currentTimeMillis() - (  29 * 60 * 1000) ); // less than 30 min parking time should give CAR free parking
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
@@ -141,7 +140,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareBikeWithLessThan30minutesParkingTime(){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  29 * 60 * 1000) ); // less than 30 minutes parking time should give BIKE free parking fare
+        inTime.setTime( System.currentTimeMillis() - (  29 * 60 * 1000) ); // less than 30 min parking time should give BIKE free parking
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
 
@@ -164,11 +163,8 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
 
         boolean discount = true;
-
         fareCalculatorService.calculateFare(ticket, discount);
-
         double expectedPrice = 0.95 * Fare.CAR_RATE_PER_HOUR; // 5% discount
-
         assertEquals(expectedPrice, ticket.getPrice());
     }
 
@@ -184,11 +180,8 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
 
         boolean discount = true;
-
         fareCalculatorService.calculateFare(ticket, discount);
-
         double expectedPrice = 0.95 * Fare.BIKE_RATE_PER_HOUR; // 5% discount
-
         assertEquals(expectedPrice, ticket.getPrice());
     }
 }
